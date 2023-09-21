@@ -121,31 +121,23 @@ function validarCadenaNombre(cadena) {
         }
     }
 
-    function validarFotoPerfil(archivo) {
+    function validarFotoPerfil(imagen) {
         const mensaje = document.getElementById('mensaje');
 
         if (!imagen) {
+          mostrarInvalidFeedBack(contrasena);
           mensaje.textContent = 'No se ha seleccionado una imagen.';
-          return;
+          return false;
         }
 
         // Verificar formato de imagen (puedes ajustar las extensiones permitidas)
         const formatosPermitidos = ['image/jpeg', 'image/png', 'image/gif'];
-        if (!formatosPermitidos.includes(imagen.type)) {
+        const pesoMaximoBytes = 1024 * 1024; 
+        if (!formatosPermitidos.includes(imagen.type) && imagen.size > pesoMaximoBytes) {
           mensaje.textContent = 'Formato de imagen no válido. Se permiten formatos JPEG, PNG o GIF.';
-          return;
+          mostrarValidFeedBack(contrasena);
+          return true;
         }
-
-        // Verificar peso de imagen (en este ejemplo, se permite un máximo de 1 MB)
-        const pesoMaximoBytes = 1024 * 1024; // 1 MB
-        if (imagen.size > pesoMaximoBytes) {
-          mensaje.textContent = 'La imagen excede el tamaño máximo permitido (1 MB).';
-          return;
-        }
-
-        // Si ha pasado todas las validaciones, puedes realizar acciones adicionales aquí
-        mensaje.textContent = 'La imagen es válida.';
-        // Por ejemplo, mostrar la imagen en una vista previa o enviarla al servidor.
       }
 
 
@@ -218,6 +210,7 @@ function validarCadenaNombre(cadena) {
       let res8 = validarFormatoCorreo(correo);
       let res9 = validarPassword(contrasena);
       let res10 = validarNulo(mutual);
+      let res11 = validarFotoPerfil(imagen);
 
 
       if (res1 && res2 && res3 && res4 && res5 && res6 && res7 && res8 && res9 && res10) {
